@@ -192,15 +192,16 @@
         useEffect(() => {
           if (!window.Chart || !cadenceRef.current || !viewsRef.current) return undefined;
 
-          const cadenceMax = Math.max(4, Math.ceil(Math.max(...item.cadenceTrend)));
+          const cadenceSeries = [0, ...item.cadenceTrend];
+          const cadenceMax = Math.max(4, Math.ceil(Math.max(...cadenceSeries)));
           const viewsMax = Math.ceil((Math.max(...item.viewsTrend) * 1.12) / 10000) * 10000;
           const cadenceChart = new Chart(cadenceRef.current, {
             type: "line",
             data: {
-              labels: ["W1", "W2", "W3", "W4"],
+              labels: ["", "W1", "W2", "W3", "W4"],
               datasets: [
                 {
-                  data: item.cadenceTrend,
+                  data: cadenceSeries,
                   borderColor: "#ff0000",
                   pointRadius: 0,
                   borderWidth: 2,
@@ -241,13 +242,13 @@
           h(
             "div",
             { className: "mini-chart-block" },
-            h("span", null, "Cadenza"),
+            h("span", null, "Cadenza video"),
             h("div", { className: "mini-chart-frame" }, h("canvas", { ref: cadenceRef }))
           ),
           h(
             "div",
             { className: "mini-chart-block" },
-            h("span", null, "Views Mediane"),
+            h("span", null, "Views medie"),
             h("div", { className: "mini-chart-frame" }, h("canvas", { ref: viewsRef }))
           )
         );
@@ -258,7 +259,7 @@
           responsive: true,
           maintainAspectRatio: false,
           layout: {
-            padding: isViews ? { top: 4, right: 4, bottom: 2, left: 4 } : { top: 7, right: 4, bottom: 7, left: 4 }
+            padding: isViews ? { top: 4, right: 4, bottom: 0, left: 4 } : { top: 6, right: 4, bottom: 0, left: 0 }
           },
           elements: {
             line: {
@@ -323,14 +324,14 @@
                 "x"
               ),
               h("span", { className: "popover-kicker" }, selected.label),
-              h("strong", null, `${formatCompact(selected.units / 1000)}k impatto totale`),
+              h("strong", null, `${formatCompact(selected.units / 1000)}k di impatto totale`),
               h(MiniCharts, { item: selected }),
               h(
                 "p",
                 null,
                 `${selected.cadence.toFixed(1)} per ${formatCompact(selected.medianViews / 1000)}k = ${formatCompact(
                   selected.units / 1000
-                )}k impatto totale`
+                )}k di impatto totale`
               )
             )
         );
