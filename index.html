@@ -197,7 +197,7 @@
       }));
       const futureImpactData = [
         { label: "tu adesso", value: compositeData[0].units },
-        { label: "TU grazie a Nicolò", value: 651000, accent: true }
+        { label: "tu grazie a Nicolò", value: 651000, accent: true }
       ];
       let showCompositePopover = () => {};
 
@@ -425,7 +425,7 @@
                   padding: 0,
                   callback(value) {
                     const label = futureImpactData[value]?.label ?? "";
-                    return label === "TU grazie a Nicolò" && isMobileViewport ? ["TU", "grazie", "Nicolò"] : label;
+                    return label === "tu grazie a Nicolò" && isMobileViewport ? ["tu", "grazie", "Nicolò"] : label;
                   }
                 }
               }
