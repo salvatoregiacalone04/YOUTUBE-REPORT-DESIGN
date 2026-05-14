@@ -133,7 +133,18 @@
           </div>
         </article>
 
-        <article class="panel chart-card chart-empty" aria-label="Secondo grafico in arrivo"></article>
+        <article class="panel chart-card chart-empty future-chart-card">
+          <div class="chart-heading">
+            <div>
+              <h2>TU ADESSO VS DOPO</h2>
+              <span class="eyebrow chart-formula">(scenario previsto)</span>
+            </div>
+          </div>
+
+          <div class="chart-frame">
+            <canvas id="futureImpactChart" aria-label="Grafico scenario attuale e scenario con Nicolo"></canvas>
+          </div>
+        </article>
         <div class="cta-space" aria-hidden="true"></div>
       </section>
     </main>
@@ -184,6 +195,10 @@
         ...item,
         units: item.cadence * item.medianViews
       }));
+      const futureImpactData = [
+        { label: "tu adesso", value: compositeData[0].units },
+        { label: "tu dopo grazie a Nicolò", value: 651000, accent: true }
+      ];
       let showCompositePopover = () => {};
 
       function MiniCharts({ item }) {
@@ -421,6 +436,90 @@
                   );
 
               if (points.length) showCompositePopover(compositeData[points[0].index]);
+            }
+          }
+        });
+      }
+
+      const futureChartCanvas = document.getElementById("futureImpactChart");
+      if (futureChartCanvas && window.Chart) {
+        const isMobileViewport = window.matchMedia("(max-width: 560px)").matches;
+
+        new Chart(futureChartCanvas, {
+          type: "bar",
+          data: {
+            labels: futureImpactData.map((item) => item.label),
+            datasets: [
+              {
+                label: "impatto totale",
+                data: futureImpactData.map((item) => item.value),
+                backgroundColor: futureImpactData.map((item) =>
+                  item.accent ? "#ff0000" : "rgba(255, 255, 255, 0.22)"
+                ),
+                borderColor: futureImpactData.map((item) =>
+                  item.accent ? "#ff0000" : "rgba(255, 255, 255, 0.34)"
+                ),
+                borderWidth: 1,
+                borderRadius: 6,
+                barThickness: isMobileViewport ? 10 : 12,
+                categoryPercentage: 0.72
+              }
+            ]
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: "#ffffff",
+                borderColor: "#000000",
+                borderWidth: 1,
+                titleColor: "#000000",
+                bodyColor: "#000000",
+                displayColors: false,
+                callbacks: {
+                  label(context) {
+                    return `${formatCompact(context.raw / 1000)}k impatto totale`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                min: 0,
+                max: 1000000,
+                grid: {
+                  color: "rgba(255, 255, 255, 0.1)"
+                },
+                title: {
+                  display: !isMobileViewport,
+                  text: "impatto totale",
+                  color: "#ffffff"
+                },
+                ticks: {
+                  color: "#ffffff",
+                  font: {
+                    size: isMobileViewport ? 8 : 10
+                  },
+                  maxTicksLimit: isMobileViewport ? 3 : 6,
+                  callback(value) {
+                    return `${Number(value) / 1000}k`;
+                  }
+                }
+              },
+              y: {
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  color: "#ffffff",
+                  font: {
+                    size: isMobileViewport ? 8 : 10
+                  }
+                }
+              }
             }
           }
         });
