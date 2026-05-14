@@ -419,14 +419,13 @@
                 },
                 ticks: {
                   color: "#ffffff",
-                  crossAlign: "far",
                   font: {
                     size: isMobileViewport ? 7 : 9
                   },
-                  padding: 2,
+                  padding: 0,
                   callback(value) {
                     const label = futureImpactData[value]?.label ?? "";
-                    return label === "dopo grazie a Nicolò" ? ["dopo grazie", "a Nicolò"] : label;
+                    return label === "dopo grazie a Nicolò" && isMobileViewport ? ["dopo", "grazie", "Nicolò"] : label;
                   }
                 }
               }
