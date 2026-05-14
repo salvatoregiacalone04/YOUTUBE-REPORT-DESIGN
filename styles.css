@@ -299,22 +299,19 @@ body {
 .charts-section {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: minmax(0, 1fr) minmax(48px, 0.36fr) 15vh;
+  grid-template-rows: minmax(112px, 0.54fr) minmax(88px, 0.46fr);
   gap: 12px;
   min-height: 0;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.chart-card,
-.chart-slot {
-  min-height: 0;
-}
-
 .chart-card {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  padding: 12px;
+  min-height: 112px;
+  max-height: 190px;
+  padding: 10px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
     #000000;
@@ -334,47 +331,19 @@ body {
   background: rgba(255, 255, 255, 0.018);
 }
 
-.chart-slot {
-  border-style: dashed;
-  background: rgba(255, 255, 255, 0.018);
-  box-shadow: none;
-}
-
-.chart-slot-left {
-  grid-column: 1;
+.cta-space {
+  grid-column: 1 / -1;
   grid-row: 2;
-}
-
-.benchmark-widget-host {
-  overflow: hidden;
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.08);
-  padding: 0;
-  background: #0f0f0f;
-}
-
-.benchmark-widget-host > div {
-  height: 100%;
   min-height: 0;
 }
 
-.chart-slot-right {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-.cta-space {
-  grid-column: 1 / -1;
-  grid-row: 3;
-}
-
 .chart-heading {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .chart-heading h2 {
-  margin: 6px 0 0;
-  font-size: 15px;
+  margin: 4px 0 0;
+  font-size: 13px;
   line-height: 1.2;
 }
 
@@ -503,7 +472,14 @@ body {
   }
 
   .charts-section {
+    grid-template-rows: minmax(104px, 0.5fr) minmax(84px, 0.5fr);
     gap: 8px;
+  }
+
+  .chart-card {
+    min-height: 104px;
+    max-height: 168px;
+    padding: 9px;
   }
 
   .composite-popover {
@@ -631,14 +607,39 @@ body {
   }
 
   .charts-section {
-    grid-template-rows: minmax(0, 1fr) minmax(34px, 0.3fr) 15vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(86px, 0.34fr) minmax(58px, 0.22fr) minmax(72px, 0.44fr);
     gap: 6px;
     margin-top: 0;
     margin-bottom: 0;
   }
 
+  .composite-chart-card,
+  .chart-empty,
+  .cta-space {
+    grid-column: 1;
+  }
+
+  .composite-chart-card {
+    grid-row: 1;
+  }
+
+  .chart-empty {
+    grid-row: 2;
+  }
+
+  .cta-space {
+    grid-row: 3;
+  }
+
   .chart-card {
-    padding: 8px;
+    min-height: 58px;
+    max-height: 132px;
+    padding: 7px;
+  }
+
+  .composite-chart-card {
+    min-height: 86px;
   }
 
   .chart-heading {
@@ -647,7 +648,7 @@ body {
   }
 
   .chart-heading h2 {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .composite-popover {
