@@ -424,6 +424,7 @@ body {
 
 .composite-popover p {
   margin: 10px 0 0;
+  clear: both;
   color: #000000;
   font-size: 13px;
   font-weight: 800;
@@ -438,13 +439,15 @@ body {
 
 .mini-chart-block {
   display: grid;
-  grid-template-rows: auto 54px;
+  grid-template-rows: auto minmax(0, 54px);
   gap: 5px;
   min-width: 0;
+  min-height: 0;
   border: 1px solid #eeeeee;
   border-radius: 6px;
   padding: 8px;
   background: #fafafa;
+  overflow: hidden;
 }
 
 .mini-chart-block span {
@@ -453,9 +456,21 @@ body {
   font-weight: 800;
 }
 
-.mini-chart-block canvas {
+.mini-chart-frame {
+  display: grid;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+  height: 54px;
+  overflow: hidden;
+}
+
+.mini-chart-frame canvas {
+  display: block;
   width: 100%;
   height: 54px;
+  max-width: 100%;
+  max-height: 54px;
 }
 
 @media (max-width: 900px) {
@@ -670,7 +685,7 @@ body {
     right: 6px;
     bottom: 6px;
     width: calc(100% - 12px);
-    padding: 8px;
+    padding: 9px;
   }
 
   .composite-popover > strong {
@@ -678,15 +693,18 @@ body {
   }
 
   .composite-popover p {
+    margin-top: 8px;
     font-size: 9px;
+    line-height: 1.2;
   }
 
   .popover-mini-grid {
-    gap: 7px;
+    gap: 6px;
   }
 
   .mini-chart-block {
-    grid-template-rows: auto 32px;
+    grid-template-rows: auto minmax(0, 36px);
+    gap: 4px;
     padding: 5px;
   }
 
@@ -694,7 +712,12 @@ body {
     font-size: 8px;
   }
 
-  .mini-chart-block canvas {
-    height: 32px;
+  .mini-chart-frame {
+    height: 36px;
+  }
+
+  .mini-chart-frame canvas {
+    height: 36px;
+    max-height: 36px;
   }
 }

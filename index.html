@@ -238,8 +238,18 @@
         return h(
           "div",
           { className: "popover-mini-grid" },
-          h("div", { className: "mini-chart-block" }, h("span", null, "Cadenza"), h("canvas", { ref: cadenceRef })),
-          h("div", { className: "mini-chart-block" }, h("span", null, "Views Mediane"), h("canvas", { ref: viewsRef }))
+          h(
+            "div",
+            { className: "mini-chart-block" },
+            h("span", null, "Cadenza"),
+            h("div", { className: "mini-chart-frame" }, h("canvas", { ref: cadenceRef }))
+          ),
+          h(
+            "div",
+            { className: "mini-chart-block" },
+            h("span", null, "Views Mediane"),
+            h("div", { className: "mini-chart-frame" }, h("canvas", { ref: viewsRef }))
+          )
         );
       }
 
@@ -248,7 +258,7 @@
           responsive: true,
           maintainAspectRatio: false,
           layout: {
-            padding: isViews ? { top: 3, right: 2, bottom: 0, left: 2 } : { top: 3, right: 2, bottom: 2, left: 0 }
+            padding: isViews ? { top: 4, right: 4, bottom: 2, left: 4 } : { top: 7, right: 4, bottom: 7, left: 4 }
           },
           elements: {
             line: {
