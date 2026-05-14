@@ -524,18 +524,12 @@ body {
   }
 
   .goals-panel {
-    flex-basis: auto;
-    width: 100%;
+    flex: 0 0 84px;
   }
 
   .content-grid {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-
-  .main-panel {
-    max-height: none;
+    align-items: center;
+    gap: 5px;
   }
 
   .panel-heading,
