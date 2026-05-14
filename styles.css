@@ -283,6 +283,88 @@ body {
   line-height: 1.35;
 }
 
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+  padding-bottom: 96px;
+}
+
+.chart-card,
+.chart-slot {
+  aspect-ratio: 16 / 10;
+}
+
+.chart-card {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 18px;
+}
+
+.views-chart-card {
+  grid-column: 1;
+}
+
+.chart-spacer {
+  min-height: 1px;
+}
+
+.chart-slot {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.018);
+  box-shadow: none;
+}
+
+.chart-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.chart-heading h2 {
+  margin: 6px 0 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.chart-detail {
+  min-width: 180px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: rgba(0, 0, 0, 0.24);
+  text-align: right;
+}
+
+.chart-detail span,
+.chart-detail small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.chart-detail strong {
+  display: block;
+  margin: 3px 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.chart-frame {
+  position: relative;
+  min-height: 0;
+}
+
+.chart-frame canvas {
+  width: 100%;
+  height: 100%;
+}
+
 @media (max-width: 900px) {
   .topbar {
     gap: 12px;
@@ -295,6 +377,19 @@ body {
 
   .content-grid {
     gap: 12px;
+  }
+
+  .charts-section {
+    gap: 12px;
+  }
+
+  .chart-heading {
+    display: grid;
+  }
+
+  .chart-detail {
+    min-width: 0;
+    text-align: left;
   }
 }
 
@@ -414,5 +509,37 @@ body {
     padding: 0 8px 8px 27px;
     font-size: 10px;
     line-height: 1.25;
+  }
+
+  .charts-section {
+    gap: 8px;
+    margin-top: 10px;
+    padding-bottom: 72px;
+  }
+
+  .chart-card {
+    padding: 10px;
+  }
+
+  .chart-heading {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .chart-heading h2 {
+    font-size: 12px;
+  }
+
+  .chart-detail {
+    padding: 7px;
+  }
+
+  .chart-detail span,
+  .chart-detail small {
+    font-size: 9px;
+  }
+
+  .chart-detail strong {
+    font-size: 11px;
   }
 }

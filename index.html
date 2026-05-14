@@ -116,7 +116,32 @@
           </div>
         </article>
       </section>
+
+      <section class="charts-section" aria-label="Metriche canale">
+        <article class="panel chart-card views-chart-card">
+          <div class="chart-heading">
+            <div>
+              <span class="eyebrow">Views x cadenza</span>
+              <h2>Andamento Views / Cadenza media</h2>
+            </div>
+            <div class="chart-detail" id="chartDetail" aria-live="polite">
+              <span>Dettaglio</span>
+              <strong>Seleziona un punto</strong>
+              <small>Average Cadence e Views</small>
+            </div>
+          </div>
+
+          <div class="chart-frame">
+            <canvas id="viewsCadenceChart" aria-label="Grafico views e cadenza media"></canvas>
+          </div>
+        </article>
+
+        <div class="chart-spacer" aria-hidden="true"></div>
+        <div class="panel chart-slot" aria-hidden="true"></div>
+        <div class="panel chart-slot" aria-hidden="true"></div>
+      </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       document.querySelectorAll(".report-item").forEach((item) => {
         item.addEventListener("toggle", () => {
@@ -127,6 +152,133 @@
           });
         });
       });
+
+      const chartCanvas = document.getElementById("viewsCadenceChart");
+      const chartDetail = document.getElementById("chartDetail");
+      const cadenceData = [
+        { label: "Settimana 1", cadence: 1.2, views: 12500 },
+        { label: "Settimana 2", cadence: 1.8, views: 18800 },
+        { label: "Settimana 3", cadence: 2.1, views: 24100 },
+        { label: "Settimana 4", cadence: 1.6, views: 16900 },
+        { label: "Settimana 5", cadence: 2.4, views: 31600 },
+        { label: "Settimana 6", cadence: 2.8, views: 39200 }
+      ];
+
+      const formatViews = new Intl.NumberFormat("it-IT").format;
+
+      function updateChartDetail(index) {
+        const point = cadenceData[index];
+        if (!point) return;
+
+        chartDetail.innerHTML = `
+          <span>${point.label}</span>
+          <strong>${formatViews(point.views)} views</strong>
+          <small>Average Cadence: ${point.cadence.toFixed(1)} video/settimana</small>
+        `;
+      }
+
+      if (chartCanvas && window.Chart) {
+        const viewsCadenceChart = new Chart(chartCanvas, {
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: "Views",
+                data: cadenceData.map((point) => ({
+                  x: point.cadence,
+                  y: point.views
+                })),
+                borderColor: "#ff0033",
+                backgroundColor: "rgba(255, 0, 51, 0.14)",
+                pointBackgroundColor: "#ffffff",
+                pointBorderColor: "#ff0033",
+                pointBorderWidth: 2,
+                pointHoverRadius: 6,
+                pointRadius: 4,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.35
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: "nearest",
+              intersect: false
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: "#111111",
+                borderColor: "#ff0033",
+                borderWidth: 1,
+                titleColor: "#ffffff",
+                bodyColor: "#ffffff",
+                displayColors: false,
+                callbacks: {
+                  label(context) {
+                    const point = cadenceData[context.dataIndex];
+                    return [
+                      `Views: ${formatViews(point.views)}`,
+                      `Average Cadence: ${point.cadence.toFixed(1)} video/settimana`
+                    ];
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                type: "linear",
+                grid: {
+                  color: "rgba(255, 255, 255, 0.08)"
+                },
+                title: {
+                  display: true,
+                  text: "Average Cadence",
+                  color: "#ffffff"
+                },
+                ticks: {
+                  color: "#a7a7a7",
+                  callback(value) {
+                    return `${value} v/s`;
+                  }
+                }
+              },
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: "rgba(255, 255, 255, 0.08)"
+                },
+                title: {
+                  display: true,
+                  text: "Views",
+                  color: "#ffffff"
+                },
+                ticks: {
+                  color: "#a7a7a7",
+                  callback(value) {
+                    return `${Number(value) / 1000}k`;
+                  }
+                }
+              }
+            },
+            onClick(event) {
+              const points = viewsCadenceChart.getElementsAtEventForMode(
+                event,
+                "nearest",
+                { intersect: false },
+                true
+              );
+
+              if (points.length) updateChartDetail(points[0].index);
+            }
+          }
+        });
+      }
     </script>
   </body>
 </html>
