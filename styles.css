@@ -488,11 +488,21 @@ body {
 }
 
 @media (max-width: 560px) {
+  html,
+  body {
+    height: auto;
+    min-height: 100svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   .dashboard {
     width: min(100% - 12px, 1180px);
-    grid-template-rows: auto minmax(0, 0.62fr) minmax(0, 1fr);
-    gap: 6px;
-    padding-top: 8px;
+    grid-template-rows: auto auto auto;
+    gap: 8px;
+    height: auto;
+    min-height: 100svh;
+    padding: 8px 0 16px;
   }
 
   .topbar {
@@ -514,12 +524,18 @@ body {
   }
 
   .goals-panel {
-    flex-basis: 84px;
+    flex-basis: auto;
+    width: 100%;
   }
 
   .content-grid {
-    align-items: center;
-    gap: 5px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .main-panel {
+    max-height: none;
   }
 
   .panel-heading,
@@ -608,7 +624,7 @@ body {
 
   .charts-section {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: minmax(86px, 0.48fr) minmax(72px, 0.52fr);
+    grid-template-rows: 128px 92px;
     gap: 6px;
     margin-top: 0;
     margin-bottom: 0;
@@ -630,13 +646,13 @@ body {
   }
 
   .chart-card {
-    min-height: 58px;
-    max-height: 132px;
+    min-height: 128px;
+    max-height: none;
     padding: 7px;
   }
 
   .composite-chart-card {
-    min-height: 86px;
+    min-height: 128px;
   }
 
   .chart-heading {

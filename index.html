@@ -158,32 +158,25 @@
       }).format;
       const competitorData = [
         {
-          label: "TU",
+          label: "tu",
           cadence: 2,
           medianViews: 125000,
           cadenceTrend: [1.4, 1.6, 1.8, 2],
           viewsTrend: [98000, 110000, 118000, 125000]
         },
         {
-          label: "Competitor 1",
+          label: "competitor 1",
           cadence: 3.1,
           medianViews: 210000,
           cadenceTrend: [2.4, 2.8, 3, 3.1],
           viewsTrend: [160000, 186000, 204000, 210000]
         },
         {
-          label: "Competitor 2",
+          label: "competitor 2",
           cadence: 1.7,
           medianViews: 320000,
           cadenceTrend: [1.2, 1.5, 1.6, 1.7],
           viewsTrend: [280000, 295000, 306000, 320000]
-        },
-        {
-          label: "Competitor 3",
-          cadence: 2.6,
-          medianViews: 180000,
-          cadenceTrend: [2.1, 2.3, 2.5, 2.6],
-          viewsTrend: [146000, 158000, 171000, 180000]
         }
       ];
       const compositeData = competitorData.map((item) => ({
@@ -315,6 +308,7 @@
 
       const chartCanvas = document.getElementById("compositeMetricChart");
       if (chartCanvas && window.Chart) {
+        const isMobileViewport = window.matchMedia("(max-width: 560px)").matches;
         const redBarGlow = {
           id: "redBarGlow",
           afterDatasetsDraw(chart) {
@@ -351,7 +345,7 @@
                 ),
                 borderWidth: 1,
                 borderRadius: 6,
-                barThickness: 12,
+                barThickness: isMobileViewport ? 10 : 12,
                 categoryPercentage: 0.72
               }
             ]
@@ -391,15 +385,16 @@
                   color: "rgba(255, 255, 255, 0.1)"
                 },
                 title: {
-                  display: true,
+                  display: !isMobileViewport,
                   text: "Composite Units",
                   color: "#ffffff"
                 },
                 ticks: {
                   color: "#ffffff",
                   font: {
-                    size: 10
+                    size: isMobileViewport ? 8 : 10
                   },
+                  maxTicksLimit: isMobileViewport ? 3 : 6,
                   callback(value) {
                     return `${Number(value) / 1000}k`;
                   }
@@ -413,7 +408,7 @@
                 ticks: {
                   color: "#ffffff",
                   font: {
-                    size: 10
+                    size: isMobileViewport ? 8 : 10
                   }
                 }
               }
