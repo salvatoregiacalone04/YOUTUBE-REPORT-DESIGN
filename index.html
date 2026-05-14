@@ -17,8 +17,9 @@
       <header class="topbar" aria-label="Stato diagnosi">
         <p class="reasoning-time">tempo di ragionamento : 00:00</p>
         <h1>
-          DIAGNOSI COMPLETATA: 20 PROBLEMI RILEVATI ,
-          <span>5 CRITICI</span>
+          DIAGNOSI COMPLETATA
+          <br />
+          20 PROBLEMI RILEVATI, <span>5 CIRTICI</span>
         </h1>
       </header>
 
@@ -227,7 +228,7 @@
           h(
             "div",
             { className: "mini-chart-block" },
-            h("span", null, `Views medie = ${formatCompact(item.medianViews / 1000)}k`),
+            h("span", null, `Views medie : ${formatCompact(item.medianViews / 1000)} K`),
             h(
               "div",
               { className: "mini-chart-frame" },
