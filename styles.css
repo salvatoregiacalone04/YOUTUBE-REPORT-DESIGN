@@ -34,14 +34,16 @@ body {
 
 .topbar {
   position: relative;
-  display: grid;
-  grid-template-columns: 220px 1fr 220px;
-  align-items: start;
+  display: flex;
+  justify-content: center;
   min-height: 108px;
   padding-top: 4px;
 }
 
 .reasoning-time {
+  position: absolute;
+  top: 4px;
+  left: 0;
   margin: 0;
   color: var(--muted);
   font-size: 12px;
@@ -272,11 +274,13 @@ body {
 
 @media (max-width: 900px) {
   .topbar {
-    grid-template-columns: 1fr;
+    display: grid;
+    justify-content: stretch;
     gap: 18px;
   }
 
   .reasoning-time {
+    position: static;
     text-align: left;
   }
 
