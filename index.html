@@ -22,29 +22,6 @@
         </h1>
       </header>
 
-      <section class="summary-strip" aria-label="Riepilogo problemi">
-        <article class="summary-card critical">
-          <span class="label">Critici</span>
-          <strong>5</strong>
-          <small>Richiedono intervento immediato</small>
-        </article>
-        <article class="summary-card warning">
-          <span class="label">Prioritari</span>
-          <strong>8</strong>
-          <small>Impatto su retention e click</small>
-        </article>
-        <article class="summary-card neutral">
-          <span class="label">Ottimizzazioni</span>
-          <strong>7</strong>
-          <small>Migliorie di ranking e formato</small>
-        </article>
-        <article class="summary-card score">
-          <span class="label">Score canale</span>
-          <strong>62%</strong>
-          <small>Diagnosi creativa e tecnica</small>
-        </article>
-      </section>
-
       <section class="content-grid">
         <aside class="panel goals-panel" aria-label="Goal dichiarati">
           <div class="panel-heading compact">
@@ -71,71 +48,71 @@
         <article class="panel main-panel">
           <div class="panel-heading">
             <span class="eyebrow">Analisi Youtube</span>
-            <h2>Problemi rilevati per area</h2>
+            <h2>Report problematiche canale</h2>
           </div>
 
-          <div class="issue-list">
-            <div class="issue-row">
-              <span class="severity-dot high"></span>
-              <div>
-                <strong>Hook iniziale debole</strong>
-                <p>Perdita marcata nei primi secondi del video.</p>
-              </div>
-              <span class="badge high">Critico</span>
-            </div>
-            <div class="issue-row">
-              <span class="severity-dot high"></span>
-              <div>
-                <strong>Thumbnail poco leggibile</strong>
-                <p>Contrasto, soggetto e promessa non emergono subito.</p>
-              </div>
-              <span class="badge high">Critico</span>
-            </div>
-            <div class="issue-row">
-              <span class="severity-dot mid"></span>
-              <div>
-                <strong>Titoli non orientati al click</strong>
-                <p>La leva di curiosita non e abbastanza specifica.</p>
-              </div>
-              <span class="badge mid">Prioritario</span>
-            </div>
-            <div class="issue-row">
-              <span class="severity-dot low"></span>
-              <div>
-                <strong>Struttura contenuto irregolare</strong>
-                <p>Alcune sezioni rallentano ritmo e chiarezza narrativa.</p>
-              </div>
-              <span class="badge low">Da migliorare</span>
-            </div>
+          <div class="report-list">
+            <details class="report-item" open>
+              <summary>
+                <span class="report-index">01</span>
+                <strong>Hook iniziale non aggancia il bisogno</strong>
+                <span class="report-tag high">critico</span>
+              </summary>
+              <p>
+                L'apertura descrive il tema invece di mostrare subito il problema concreto.
+                Nei primi secondi manca una promessa misurabile collegata al goal economico.
+              </p>
+            </details>
+
+            <details class="report-item">
+              <summary>
+                <span class="report-index">02</span>
+                <strong>Packaging non coerente con il target B2B</strong>
+                <span class="report-tag mid">parziale</span>
+              </summary>
+              <p>
+                Titolo e miniatura parlano a un pubblico generico, mentre il goal richiede
+                segnali chiari per imprenditori e aziende manifatturiere.
+              </p>
+            </details>
+
+            <details class="report-item">
+              <summary>
+                <span class="report-index">03</span>
+                <strong>Promessa evergreen troppo debole</strong>
+                <span class="report-tag mid">parziale</span>
+              </summary>
+              <p>
+                Il contenuto ha spunti riutilizzabili, ma dipende ancora da esempi contingenti.
+                Serve una struttura piu stabile, cercabile e valida nel tempo.
+              </p>
+            </details>
+
+            <details class="report-item">
+              <summary>
+                <span class="report-index">04</span>
+                <strong>Retention centrale frammentata</strong>
+                <span class="report-tag high">critico</span>
+              </summary>
+              <p>
+                Dopo l'introduzione il video alterna troppi sotto-temi senza una progressione.
+                Questo rende difficile capire perche restare fino alla soluzione.
+              </p>
+            </details>
+
+            <details class="report-item">
+              <summary>
+                <span class="report-index">05</span>
+                <strong>CTA non allineata alla monetizzazione</strong>
+                <span class="report-tag low">da rivedere</span>
+              </summary>
+              <p>
+                La call to action invita a interazioni generiche e non porta verso una richiesta
+                commerciale coerente con il target e il goal mensile.
+              </p>
+            </details>
           </div>
         </article>
-
-        <aside class="panel side-panel" aria-label="Impatto stimato">
-          <div class="panel-heading">
-            <span class="eyebrow">Impatto</span>
-            <h2>Priorita interventi</h2>
-          </div>
-
-          <div class="radial-score">
-            <span>5</span>
-            <small>problemi critici</small>
-          </div>
-
-          <div class="priority-bars">
-            <div>
-              <span>Retention</span>
-              <div class="bar"><i style="width: 88%"></i></div>
-            </div>
-            <div>
-              <span>CTR</span>
-              <div class="bar"><i style="width: 81%"></i></div>
-            </div>
-            <div>
-              <span>Packaging</span>
-              <div class="bar"><i style="width: 74%"></i></div>
-            </div>
-          </div>
-        </aside>
       </section>
     </main>
   </body>
