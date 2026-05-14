@@ -2,12 +2,10 @@
   color-scheme: dark;
   --bg: #050505;
   --panel: #111111;
-  --panel-strong: #171717;
   --text: #ffffff;
   --muted: #a7a7a7;
   --line: rgba(255, 255, 255, 0.12);
   --red: #ff0033;
-  --red-dark: #8f001d;
 }
 
 * {
@@ -32,23 +30,20 @@ body {
 }
 
 .topbar {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  min-height: 82px;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
   padding-top: 4px;
 }
 
 .reasoning-time {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
   margin: 0;
   color: var(--muted);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0;
+  text-align: center;
   text-transform: lowercase;
 }
 
@@ -105,10 +100,8 @@ body {
 }
 
 .panel-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 16px;
+  display: grid;
+  gap: 8px;
   margin-bottom: 18px;
   border-bottom: 1px solid var(--line);
   padding-bottom: 14px;
@@ -162,8 +155,12 @@ body {
   font-size: 12px;
   font-weight: 750;
   line-height: 1.15;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
   text-align: center;
+}
+
+.goal-mobile {
+  display: none;
 }
 
 .goal-status {
@@ -213,7 +210,7 @@ body {
 }
 
 .report-item summary::after {
-  content: "⌄";
+  content: "v";
   grid-column: 3;
   grid-row: 1;
   justify-self: end;
@@ -279,15 +276,7 @@ body {
 
 @media (max-width: 900px) {
   .topbar {
-    display: grid;
-    justify-content: stretch;
-    gap: 18px;
-  }
-
-  .reasoning-time {
-    position: static;
-    transform: none;
-    text-align: center;
+    gap: 12px;
   }
 
   .topbar h1 {
@@ -307,8 +296,8 @@ body {
   }
 
   .topbar {
-    min-height: 66px;
     gap: 10px;
+    margin-bottom: 10px;
   }
 
   .reasoning-time {
@@ -343,6 +332,7 @@ body {
 
   .panel-heading h2 {
     font-size: 13px;
+    line-height: 1.15;
   }
 
   .panel-heading.compact h2 {
@@ -359,9 +349,17 @@ body {
   }
 
   .goal-chip {
-    min-height: 28px;
-    padding: 6px 7px;
+    min-height: 31px;
+    padding: 6px 5px;
     font-size: 9px;
+  }
+
+  .goal-desktop {
+    display: none;
+  }
+
+  .goal-mobile {
+    display: block;
   }
 
   .goal-status {
@@ -389,12 +387,11 @@ body {
   }
 
   .report-item strong {
-    overflow: hidden;
     padding-right: 0;
-    font-size: 10px;
-    line-height: 1.15;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 9.5px;
+    line-height: 1.2;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   .report-tag {

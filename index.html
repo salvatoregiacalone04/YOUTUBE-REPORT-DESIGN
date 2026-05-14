@@ -31,7 +31,10 @@
 
           <div class="goal-recap" aria-label="Confronto goal e dati canale">
             <div class="goal-item">
-              <span class="goal-chip">&euro;4.500/mese</span>
+              <span class="goal-chip">
+                <span class="goal-desktop">&euro;4.500/mese</span>
+                <span class="goal-mobile">4500<br />mese</span>
+              </span>
               <small class="goal-status mismatch">&times; disallineato</small>
             </div>
             <div class="goal-item">
@@ -47,7 +50,6 @@
 
         <article class="panel main-panel">
           <div class="panel-heading">
-            <span class="eyebrow">Analisi Youtube</span>
             <h2>Report problematiche canale</h2>
           </div>
 
@@ -115,5 +117,16 @@
         </article>
       </section>
     </main>
+    <script>
+      document.querySelectorAll(".report-item").forEach((item) => {
+        item.addEventListener("toggle", () => {
+          if (!item.open) return;
+
+          document.querySelectorAll(".report-item[open]").forEach((openItem) => {
+            if (openItem !== item) openItem.open = false;
+          });
+        });
+      });
+    </script>
   </body>
 </html>
