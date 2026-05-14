@@ -120,7 +120,7 @@ body {
 
 .content-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.85fr);
+  grid-template-columns: minmax(190px, 0.55fr) minmax(0, 1.45fr) minmax(280px, 0.8fr);
   gap: 18px;
 }
 
@@ -130,7 +130,8 @@ body {
 }
 
 .main-panel,
-.side-panel {
+.side-panel,
+.goals-panel {
   min-height: 520px;
   padding: 24px;
 }
@@ -149,6 +150,69 @@ body {
   margin: 0;
   font-size: 22px;
   letter-spacing: 0;
+}
+
+.panel-heading.compact {
+  display: grid;
+  align-items: start;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+}
+
+.panel-heading.compact h2 {
+  color: #d8d8d8;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.goals-panel {
+  min-height: auto;
+  background: rgba(255, 255, 255, 0.025);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+}
+
+.goal-recap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 10px;
+}
+
+.goal-item {
+  display: grid;
+  gap: 7px;
+  max-width: 100%;
+}
+
+.goal-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  max-width: 100%;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+  color: #eeeeee;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.goal-status {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.goal-status.mismatch {
+  color: #ff6a85;
+}
+
+.goal-status.partial {
+  color: #ffc26b;
 }
 
 .issue-list {
@@ -289,9 +353,16 @@ body {
     text-align: left;
   }
 
-  .summary-strip,
-  .content-grid {
+  .summary-strip {
     grid-template-columns: 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .side-panel {
+    grid-column: 1 / -1;
   }
 }
 
@@ -303,8 +374,13 @@ body {
 
   .summary-card,
   .main-panel,
-  .side-panel {
+  .side-panel,
+  .goals-panel {
     padding: 16px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
   }
 
   .issue-row {
