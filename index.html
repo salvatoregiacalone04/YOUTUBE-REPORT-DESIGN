@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube Report Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="dashboard">
+      <header class="topbar" aria-label="Stato diagnosi">
+        <p class="reasoning-time">tempo di ragionamento : <span id="timer">00:00</span></p>
+        <h1>
+          DIAGNOSI COMPLETATA: 20 PROBLEMI RILEVATI ,
+          <span>5 CRITICI</span>
+        </h1>
+      </header>
+
+      <section class="summary-strip" aria-label="Riepilogo problemi">
+        <article class="summary-card critical">
+          <span class="label">Critici</span>
+          <strong>5</strong>
+          <small>Richiedono intervento immediato</small>
+        </article>
+        <article class="summary-card warning">
+          <span class="label">Prioritari</span>
+          <strong>8</strong>
+          <small>Impatto su retention e click</small>
+        </article>
+        <article class="summary-card neutral">
+          <span class="label">Ottimizzazioni</span>
+          <strong>7</strong>
+          <small>Migliorie di ranking e formato</small>
+        </article>
+        <article class="summary-card score">
+          <span class="label">Score canale</span>
+          <strong>62%</strong>
+          <small>Diagnosi creativa e tecnica</small>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel main-panel">
+          <div class="panel-heading">
+            <span class="eyebrow">Analisi Youtube</span>
+            <h2>Problemi rilevati per area</h2>
+          </div>
+
+          <div class="issue-list">
+            <div class="issue-row">
+              <span class="severity-dot high"></span>
+              <div>
+                <strong>Hook iniziale debole</strong>
+                <p>Perdita marcata nei primi secondi del video.</p>
+              </div>
+              <span class="badge high">Critico</span>
+            </div>
+            <div class="issue-row">
+              <span class="severity-dot high"></span>
+              <div>
+                <strong>Thumbnail poco leggibile</strong>
+                <p>Contrasto, soggetto e promessa non emergono subito.</p>
+              </div>
+              <span class="badge high">Critico</span>
+            </div>
+            <div class="issue-row">
+              <span class="severity-dot mid"></span>
+              <div>
+                <strong>Titoli non orientati al click</strong>
+                <p>La leva di curiosita non e abbastanza specifica.</p>
+              </div>
+              <span class="badge mid">Prioritario</span>
+            </div>
+            <div class="issue-row">
+              <span class="severity-dot low"></span>
+              <div>
+                <strong>Struttura contenuto irregolare</strong>
+                <p>Alcune sezioni rallentano ritmo e chiarezza narrativa.</p>
+              </div>
+              <span class="badge low">Da migliorare</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="panel side-panel" aria-label="Impatto stimato">
+          <div class="panel-heading">
+            <span class="eyebrow">Impatto</span>
+            <h2>Priorita interventi</h2>
+          </div>
+
+          <div class="radial-score">
+            <span>5</span>
+            <small>problemi critici</small>
+          </div>
+
+          <div class="priority-bars">
+            <div>
+              <span>Retention</span>
+              <div class="bar"><i style="width: 88%"></i></div>
+            </div>
+            <div>
+              <span>CTR</span>
+              <div class="bar"><i style="width: 81%"></i></div>
+            </div>
+            <div>
+              <span>Packaging</span>
+              <div class="bar"><i style="width: 74%"></i></div>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
