@@ -122,7 +122,7 @@
           <div class="chart-heading">
             <div>
               <h2>TU VS I COMPETITOR</h2>
-              <span class="eyebrow chart-formula">(cadenza x vievs mediane)</span>
+              <span class="eyebrow chart-formula">(cadenza per views mediane)</span>
             </div>
           </div>
 
@@ -192,6 +192,8 @@
         useEffect(() => {
           if (!window.Chart || !cadenceRef.current || !viewsRef.current) return undefined;
 
+          const cadenceMax = Math.max(4, Math.ceil(Math.max(...item.cadenceTrend)));
+          const viewsMax = Math.ceil((Math.max(...item.viewsTrend) * 1.12) / 10000) * 10000;
           const cadenceChart = new Chart(cadenceRef.current, {
             type: "line",
             data: {
@@ -202,11 +204,12 @@
                   borderColor: "#ff0000",
                   pointRadius: 0,
                   borderWidth: 2,
-                  tension: 0.35
+                  tension: 0.35,
+                  clip: false
                 }
               ]
             },
-            options: miniChartOptions(false)
+            options: miniChartOptions({ max: cadenceMax, isViews: false })
           });
           const viewsChart = new Chart(viewsRef.current, {
             type: "bar",
@@ -216,11 +219,14 @@
                 {
                   data: item.viewsTrend,
                   backgroundColor: "#ff0000",
-                  borderRadius: 4
+                  borderRadius: 3,
+                  borderSkipped: false,
+                  barPercentage: 0.72,
+                  categoryPercentage: 0.78
                 }
               ]
             },
-            options: miniChartOptions(true)
+            options: miniChartOptions({ max: viewsMax, isViews: true })
           });
 
           return () => {
@@ -237,20 +243,37 @@
         );
       }
 
-      function miniChartOptions(isViews) {
+      function miniChartOptions({ max, isViews }) {
         return {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: isViews ? { top: 3, right: 2, bottom: 0, left: 2 } : { top: 3, right: 2, bottom: 2, left: 0 }
+          },
+          elements: {
+            line: {
+              capBezierPoints: true
+            }
+          },
           plugins: {
             legend: { display: false },
             tooltip: { enabled: false }
           },
           scales: {
-            x: { display: false },
+            x: {
+              display: false,
+              offset: isViews,
+              grid: { display: false },
+              ticks: { display: false }
+            },
             y: {
               display: false,
               beginAtZero: true,
-              max: isViews ? undefined : 4
+              min: 0,
+              max,
+              grace: 0,
+              grid: { display: false },
+              ticks: { display: false }
             }
           }
         };
@@ -290,14 +313,14 @@
                 "x"
               ),
               h("span", { className: "popover-kicker" }, selected.label),
-              h("strong", null, `${formatCompact(selected.units / 1000)}k Units`),
+              h("strong", null, `${formatCompact(selected.units / 1000)}k impatto totale`),
               h(MiniCharts, { item: selected }),
               h(
                 "p",
                 null,
-                `${selected.cadence.toFixed(1)} x ${formatCompact(selected.medianViews / 1000)}k = ${formatCompact(
+                `${selected.cadence.toFixed(1)} per ${formatCompact(selected.medianViews / 1000)}k = ${formatCompact(
                   selected.units / 1000
-                )}k Units`
+                )}k impatto totale`
               )
             )
         );
@@ -335,7 +358,7 @@
             labels: compositeData.map((item) => item.label),
             datasets: [
               {
-                label: "Composite Units",
+                label: "impatto totale",
                 data: compositeData.map((item) => item.units),
                 backgroundColor: compositeData.map((item, index) =>
                   index === 0 ? "#ff0000" : "rgba(255, 255, 255, 0.22)"
@@ -370,9 +393,9 @@
                   },
                   label(context) {
                     const item = compositeData[context.dataIndex];
-                    return `${item.cadence.toFixed(1)} x ${formatCompact(item.medianViews / 1000)}k = ${formatCompact(
+                    return `${item.cadence.toFixed(1)} per ${formatCompact(item.medianViews / 1000)}k = ${formatCompact(
                       item.units / 1000
-                    )}k Units`;
+                    )}k impatto totale`;
                   }
                 }
               }
@@ -386,7 +409,7 @@
                 },
                 title: {
                   display: !isMobileViewport,
-                  text: "Composite Units",
+                  text: "impatto totale",
                   color: "#ffffff"
                 },
                 ticks: {
