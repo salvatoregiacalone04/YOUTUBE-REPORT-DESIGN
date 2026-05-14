@@ -138,7 +138,7 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module">
-      import React, { useEffect, useRef, useState } from "https://esm.sh/react@18.2.0";
+      import React, { useEffect, useState } from "https://esm.sh/react@18.2.0";
       import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
       import { AnimatePresence, motion } from "https://esm.sh/framer-motion@11.18.2?deps=react@18.2.0";
 
@@ -186,55 +186,20 @@
       let showCompositePopover = () => {};
 
       function MiniCharts({ item }) {
-        const cadenceRef = useRef(null);
-        const viewsRef = useRef(null);
-
-        useEffect(() => {
-          if (!window.Chart || !cadenceRef.current || !viewsRef.current) return undefined;
-
-          const cadenceSeries = [0, ...item.cadenceTrend];
-          const cadenceMax = Math.max(4, Math.ceil(Math.max(...cadenceSeries)));
-          const viewsMax = Math.ceil((Math.max(...item.viewsTrend) * 1.12) / 10000) * 10000;
-          const cadenceChart = new Chart(cadenceRef.current, {
-            type: "line",
-            data: {
-              labels: ["", "W1", "W2", "W3", "W4"],
-              datasets: [
-                {
-                  data: cadenceSeries,
-                  borderColor: "#ff0000",
-                  pointRadius: 0,
-                  borderWidth: 2,
-                  tension: 0.35,
-                  clip: false
-                }
-              ]
-            },
-            options: miniChartOptions({ max: cadenceMax, isViews: false })
-          });
-          const viewsChart = new Chart(viewsRef.current, {
-            type: "bar",
-            data: {
-              labels: ["W1", "W2", "W3", "W4"],
-              datasets: [
-                {
-                  data: item.viewsTrend,
-                  backgroundColor: "#ff0000",
-                  borderRadius: 3,
-                  borderSkipped: false,
-                  barPercentage: 0.72,
-                  categoryPercentage: 0.78
-                }
-              ]
-            },
-            options: miniChartOptions({ max: viewsMax, isViews: true })
-          });
-
-          return () => {
-            cadenceChart.destroy();
-            viewsChart.destroy();
-          };
-        }, [item]);
+        const chartWidth = 100;
+        const chartHeight = 40;
+        const cadenceSeries = [0, ...item.cadenceTrend];
+        const cadenceMax = Math.max(4, Math.ceil(Math.max(...cadenceSeries)));
+        const cadencePoints = cadenceSeries
+          .map((value, index) => {
+            const x = (index / (cadenceSeries.length - 1)) * chartWidth;
+            const y = chartHeight - (value / cadenceMax) * chartHeight;
+            return `${x},${y}`;
+          })
+          .join(" ");
+        const viewsMax = Math.max(...item.viewsTrend);
+        const barWidth = 14;
+        const barGap = (chartWidth - barWidth * item.viewsTrend.length) / (item.viewsTrend.length - 1);
 
         return h(
           "div",
@@ -242,52 +207,49 @@
           h(
             "div",
             { className: "mini-chart-block" },
-            h("span", null, "Cadenza video"),
-            h("div", { className: "mini-chart-frame" }, h("canvas", { ref: cadenceRef }))
+            h("span", null, `Cadenza video = ${item.cadence.toFixed(1)}`),
+            h(
+              "div",
+              { className: "mini-chart-frame" },
+              h(
+                "svg",
+                { viewBox: `0 0 ${chartWidth} ${chartHeight}`, preserveAspectRatio: "none", "aria-hidden": "true" },
+                h("polyline", {
+                  points: cadencePoints,
+                  fill: "none",
+                  stroke: "#ff0000",
+                  strokeWidth: "2",
+                  vectorEffect: "non-scaling-stroke"
+                })
+              )
+            )
           ),
           h(
             "div",
             { className: "mini-chart-block" },
-            h("span", null, "Views medie"),
-            h("div", { className: "mini-chart-frame" }, h("canvas", { ref: viewsRef }))
+            h("span", null, `Views medie = ${formatCompact(item.medianViews / 1000)}k`),
+            h(
+              "div",
+              { className: "mini-chart-frame" },
+              h(
+                "svg",
+                { viewBox: `0 0 ${chartWidth} ${chartHeight}`, preserveAspectRatio: "none", "aria-hidden": "true" },
+                item.viewsTrend.map((value, index) => {
+                  const height = (value / viewsMax) * chartHeight;
+                  return h("rect", {
+                    key: index,
+                    x: index * (barWidth + barGap),
+                    y: chartHeight - height,
+                    width: barWidth,
+                    height,
+                    rx: 2,
+                    fill: "#ff0000"
+                  });
+                })
+              )
+            )
           )
         );
-      }
-
-      function miniChartOptions({ max, isViews }) {
-        return {
-          responsive: true,
-          maintainAspectRatio: false,
-          layout: {
-            padding: isViews ? { top: 4, right: 4, bottom: 0, left: 4 } : { top: 6, right: 4, bottom: 0, left: 0 }
-          },
-          elements: {
-            line: {
-              capBezierPoints: true
-            }
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: false }
-          },
-          scales: {
-            x: {
-              display: false,
-              offset: isViews,
-              grid: { display: false },
-              ticks: { display: false }
-            },
-            y: {
-              display: false,
-              beginAtZero: true,
-              min: 0,
-              max,
-              grace: 0,
-              grid: { display: false },
-              ticks: { display: false }
-            }
-          }
-        };
       }
 
       function CompositePopover() {
