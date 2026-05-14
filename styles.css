@@ -339,17 +339,20 @@ body {
 
 .chart-heading {
   margin-bottom: 5px;
+  text-align: center;
 }
 
 .chart-heading h2 {
   margin: 0 0 3px;
   font-size: 13px;
   line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .chart-formula {
   font-size: 10px;
   line-height: 1;
+  text-transform: lowercase;
 }
 
 .chart-frame {
