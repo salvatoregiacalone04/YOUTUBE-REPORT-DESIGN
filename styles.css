@@ -342,9 +342,14 @@ body {
 }
 
 .chart-heading h2 {
-  margin: 4px 0 0;
+  margin: 0 0 3px;
   font-size: 13px;
   line-height: 1.2;
+}
+
+.chart-formula {
+  font-size: 10px;
+  line-height: 1;
 }
 
 .chart-frame {
