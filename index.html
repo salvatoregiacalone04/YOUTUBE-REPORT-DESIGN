@@ -118,21 +118,17 @@
       </section>
 
       <section class="charts-section" aria-label="Metriche canale">
-        <article class="panel chart-card views-chart-card">
+        <article class="panel chart-card composite-chart-card">
           <div class="chart-heading">
             <div>
-              <span class="eyebrow">Views x cadenza</span>
-              <h2>Andamento Views / Cadenza media</h2>
-            </div>
-            <div class="chart-detail" id="chartDetail" aria-live="polite">
-              <span>Dettaglio</span>
-              <strong>Seleziona un punto</strong>
-              <small>Average Cadence e Views</small>
+              <span class="eyebrow">Metrica composta</span>
+              <h2>Cadenza x Views Mediane</h2>
             </div>
           </div>
 
-          <div class="chart-frame">
-            <canvas id="viewsCadenceChart" aria-label="Grafico views e cadenza media"></canvas>
+          <div class="chart-frame composite-chart-frame">
+            <canvas id="compositeMetricChart" aria-label="Grafico metrica composta competitor"></canvas>
+            <div id="compositePopoverRoot" class="composite-popover-root"></div>
           </div>
         </article>
 
@@ -142,7 +138,11 @@
       </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+    <script type="module">
+      import React, { useEffect, useRef, useState } from "https://esm.sh/react@18.2.0";
+      import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
+      import { AnimatePresence, motion } from "https://esm.sh/framer-motion@11.18.2?deps=react@18.2.0";
+
       document.querySelectorAll(".report-item").forEach((item) => {
         item.addEventListener("toggle", () => {
           if (!item.open) return;
@@ -153,128 +153,276 @@
         });
       });
 
-      const chartCanvas = document.getElementById("viewsCadenceChart");
-      const chartDetail = document.getElementById("chartDetail");
-      const cadenceData = [
-        { label: "Settimana 1", cadence: 1.2, views: 12500 },
-        { label: "Settimana 2", cadence: 1.8, views: 18800 },
-        { label: "Settimana 3", cadence: 2.1, views: 24100 },
-        { label: "Settimana 4", cadence: 1.6, views: 16900 },
-        { label: "Settimana 5", cadence: 2.4, views: 31600 },
-        { label: "Settimana 6", cadence: 2.8, views: 39200 }
+      const h = React.createElement;
+      const formatCompact = new Intl.NumberFormat("it-IT", {
+        maximumFractionDigits: 0
+      }).format;
+      const competitorData = [
+        {
+          label: "TU",
+          cadence: 2,
+          medianViews: 125000,
+          cadenceTrend: [1.4, 1.6, 1.8, 2],
+          viewsTrend: [98000, 110000, 118000, 125000]
+        },
+        {
+          label: "Competitor 1",
+          cadence: 3.1,
+          medianViews: 210000,
+          cadenceTrend: [2.4, 2.8, 3, 3.1],
+          viewsTrend: [160000, 186000, 204000, 210000]
+        },
+        {
+          label: "Competitor 2",
+          cadence: 1.7,
+          medianViews: 320000,
+          cadenceTrend: [1.2, 1.5, 1.6, 1.7],
+          viewsTrend: [280000, 295000, 306000, 320000]
+        },
+        {
+          label: "Competitor 3",
+          cadence: 2.6,
+          medianViews: 180000,
+          cadenceTrend: [2.1, 2.3, 2.5, 2.6],
+          viewsTrend: [146000, 158000, 171000, 180000]
+        }
       ];
+      const compositeData = competitorData.map((item) => ({
+        ...item,
+        units: item.cadence * item.medianViews
+      }));
+      let showCompositePopover = () => {};
 
-      const formatViews = new Intl.NumberFormat("it-IT").format;
+      function MiniCharts({ item }) {
+        const cadenceRef = useRef(null);
+        const viewsRef = useRef(null);
 
-      function updateChartDetail(index) {
-        const point = cadenceData[index];
-        if (!point) return;
+        useEffect(() => {
+          if (!window.Chart || !cadenceRef.current || !viewsRef.current) return undefined;
 
-        chartDetail.innerHTML = `
-          <span>${point.label}</span>
-          <strong>${formatViews(point.views)} views</strong>
-          <small>Average Cadence: ${point.cadence.toFixed(1)} video/settimana</small>
-        `;
+          const cadenceChart = new Chart(cadenceRef.current, {
+            type: "line",
+            data: {
+              labels: ["W1", "W2", "W3", "W4"],
+              datasets: [
+                {
+                  data: item.cadenceTrend,
+                  borderColor: "#ff0000",
+                  pointRadius: 0,
+                  borderWidth: 2,
+                  tension: 0.35
+                }
+              ]
+            },
+            options: miniChartOptions(false)
+          });
+          const viewsChart = new Chart(viewsRef.current, {
+            type: "bar",
+            data: {
+              labels: ["W1", "W2", "W3", "W4"],
+              datasets: [
+                {
+                  data: item.viewsTrend,
+                  backgroundColor: "#ff0000",
+                  borderRadius: 4
+                }
+              ]
+            },
+            options: miniChartOptions(true)
+          });
+
+          return () => {
+            cadenceChart.destroy();
+            viewsChart.destroy();
+          };
+        }, [item]);
+
+        return h(
+          "div",
+          { className: "popover-mini-grid" },
+          h("div", { className: "mini-chart-block" }, h("span", null, "Cadenza"), h("canvas", { ref: cadenceRef })),
+          h("div", { className: "mini-chart-block" }, h("span", null, "Views Mediane"), h("canvas", { ref: viewsRef }))
+        );
       }
 
+      function miniChartOptions(isViews) {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          },
+          scales: {
+            x: { display: false },
+            y: {
+              display: false,
+              beginAtZero: true,
+              max: isViews ? undefined : 4
+            }
+          }
+        };
+      }
+
+      function CompositePopover() {
+        const [selected, setSelected] = useState(null);
+
+        useEffect(() => {
+          showCompositePopover = setSelected;
+          return () => {
+            showCompositePopover = () => {};
+          };
+        }, []);
+
+        return h(
+          AnimatePresence,
+          null,
+          selected &&
+            h(
+              motion.div,
+              {
+                className: "composite-popover",
+                initial: { opacity: 0, y: 12, scale: 0.96 },
+                animate: { opacity: 1, y: 0, scale: 1 },
+                exit: { opacity: 0, y: 8, scale: 0.96 },
+                transition: { duration: 0.2, ease: "easeOut" }
+              },
+              h(
+                "button",
+                {
+                  className: "popover-close",
+                  type: "button",
+                  "aria-label": "Chiudi dettaglio",
+                  onClick: () => setSelected(null)
+                },
+                "x"
+              ),
+              h("span", { className: "popover-kicker" }, selected.label),
+              h("strong", null, `${formatCompact(selected.units / 1000)}k Units`),
+              h(MiniCharts, { item: selected }),
+              h(
+                "p",
+                null,
+                `${selected.cadence.toFixed(1)} x ${formatCompact(selected.medianViews / 1000)}k = ${formatCompact(
+                  selected.units / 1000
+                )}k Units`
+              )
+            )
+        );
+      }
+
+      const popoverRoot = document.getElementById("compositePopoverRoot");
+      if (popoverRoot) createRoot(popoverRoot).render(h(CompositePopover));
+
+      const chartCanvas = document.getElementById("compositeMetricChart");
       if (chartCanvas && window.Chart) {
-        const viewsCadenceChart = new Chart(chartCanvas, {
-          type: "line",
+        const redBarGlow = {
+          id: "redBarGlow",
+          afterDatasetsDraw(chart) {
+            const firstBar = chart.getDatasetMeta(0).data[0];
+            if (!firstBar) return;
+
+            const { ctx } = chart;
+            const { x, y, base, height } = firstBar.getProps(["x", "y", "base", "height"], true);
+            const left = Math.min(x, base);
+            const width = Math.abs(x - base);
+
+            ctx.save();
+            ctx.shadowColor = "rgba(255, 0, 0, 0.9)";
+            ctx.shadowBlur = 18;
+            ctx.fillStyle = "rgba(255, 0, 0, 0.42)";
+            ctx.fillRect(left, y - height / 2, width, height);
+            ctx.restore();
+          }
+        };
+
+        new Chart(chartCanvas, {
+          type: "bar",
           data: {
+            labels: compositeData.map((item) => item.label),
             datasets: [
               {
-                label: "Views",
-                data: cadenceData.map((point) => ({
-                  x: point.cadence,
-                  y: point.views
-                })),
-                borderColor: "#ff0033",
-                backgroundColor: "rgba(255, 0, 51, 0.14)",
-                pointBackgroundColor: "#ffffff",
-                pointBorderColor: "#ff0033",
-                pointBorderWidth: 2,
-                pointHoverRadius: 6,
-                pointRadius: 4,
-                borderWidth: 3,
-                fill: true,
-                tension: 0.35
+                label: "Composite Units",
+                data: compositeData.map((item) => item.units),
+                backgroundColor: compositeData.map((item, index) =>
+                  index === 0 ? "#ff0000" : "rgba(255, 255, 255, 0.22)"
+                ),
+                borderColor: compositeData.map((item, index) =>
+                  index === 0 ? "#ff0000" : "rgba(255, 255, 255, 0.34)"
+                ),
+                borderWidth: 1,
+                borderRadius: 6,
+                barThickness: 18
               }
             ]
           },
+          plugins: [redBarGlow],
           options: {
+            indexAxis: "y",
             responsive: true,
             maintainAspectRatio: false,
-            interaction: {
-              mode: "nearest",
-              intersect: false
-            },
             plugins: {
-              legend: {
-                display: false
-              },
+              legend: { display: false },
               tooltip: {
-                backgroundColor: "#111111",
-                borderColor: "#ff0033",
+                backgroundColor: "#ffffff",
+                borderColor: "#000000",
                 borderWidth: 1,
-                titleColor: "#ffffff",
-                bodyColor: "#ffffff",
+                titleColor: "#000000",
+                bodyColor: "#000000",
                 displayColors: false,
                 callbacks: {
+                  title(context) {
+                    return compositeData[context[0].dataIndex].label;
+                  },
                   label(context) {
-                    const point = cadenceData[context.dataIndex];
-                    return [
-                      `Views: ${formatViews(point.views)}`,
-                      `Average Cadence: ${point.cadence.toFixed(1)} video/settimana`
-                    ];
+                    const item = compositeData[context.dataIndex];
+                    return `${item.cadence.toFixed(1)} x ${formatCompact(item.medianViews / 1000)}k = ${formatCompact(
+                      item.units / 1000
+                    )}k Units`;
                   }
                 }
               }
             },
             scales: {
               x: {
-                type: "linear",
+                min: 0,
+                max: 1000000,
                 grid: {
-                  color: "rgba(255, 255, 255, 0.08)"
+                  color: "rgba(255, 255, 255, 0.1)"
                 },
                 title: {
                   display: true,
-                  text: "Average Cadence",
+                  text: "Composite Units",
                   color: "#ffffff"
                 },
                 ticks: {
-                  color: "#a7a7a7",
-                  callback(value) {
-                    return `${value} v/s`;
-                  }
-                }
-              },
-              y: {
-                beginAtZero: true,
-                grid: {
-                  color: "rgba(255, 255, 255, 0.08)"
-                },
-                title: {
-                  display: true,
-                  text: "Views",
-                  color: "#ffffff"
-                },
-                ticks: {
-                  color: "#a7a7a7",
+                  color: "#ffffff",
                   callback(value) {
                     return `${Number(value) / 1000}k`;
                   }
                 }
+              },
+              y: {
+                labels: compositeData.map((item) => item.label),
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  color: "#ffffff"
+                }
               }
             },
-            onClick(event) {
-              const points = viewsCadenceChart.getElementsAtEventForMode(
-                event,
-                "nearest",
-                { intersect: false },
-                true
-              );
+            onClick(event, activeElements, chart) {
+              const points = activeElements?.length
+                ? activeElements
+                : chart.getElementsAtEventForMode(
+                    event,
+                    "nearest",
+                    { intersect: true },
+                    true
+                  );
 
-              if (points.length) updateChartDetail(points[0].index);
+              if (points.length) showCompositePopover(compositeData[points[0].index]);
             }
           }
         });

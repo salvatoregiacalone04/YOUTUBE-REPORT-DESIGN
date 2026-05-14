@@ -288,7 +288,7 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-top: 18px;
-  padding-bottom: 96px;
+  margin-bottom: 40px;
 }
 
 .chart-card,
@@ -300,10 +300,16 @@ body {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+    #000000;
 }
 
-.views-chart-card {
+.composite-chart-card {
   grid-column: 1;
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.38),
+    inset 0 0 0 1px rgba(255, 0, 0, 0.08);
 }
 
 .chart-spacer {
@@ -317,9 +323,6 @@ body {
 }
 
 .chart-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
   margin-bottom: 14px;
 }
 
@@ -329,40 +332,107 @@ body {
   line-height: 1.2;
 }
 
-.chart-detail {
-  min-width: 180px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  padding: 9px 10px;
-  background: rgba(0, 0, 0, 0.24);
-  text-align: right;
-}
-
-.chart-detail span,
-.chart-detail small {
-  display: block;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.chart-detail strong {
-  display: block;
-  margin: 3px 0;
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.2;
-}
-
 .chart-frame {
   position: relative;
   min-height: 0;
 }
 
+.composite-chart-frame {
+  filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.16));
+}
+
 .chart-frame canvas {
   width: 100%;
   height: 100%;
+}
+
+.composite-popover-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.composite-popover {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 3;
+  width: min(310px, calc(100% - 16px));
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  padding: 14px;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+  pointer-events: auto;
+}
+
+.popover-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #d5d5d5;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000000;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.popover-kicker {
+  display: block;
+  color: #6d6d6d;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.composite-popover > strong {
+  display: block;
+  margin: 4px 28px 10px 0;
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.composite-popover p {
+  margin: 10px 0 0;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.popover-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mini-chart-block {
+  display: grid;
+  grid-template-rows: auto 54px;
+  gap: 5px;
+  min-width: 0;
+  border: 1px solid #eeeeee;
+  border-radius: 6px;
+  padding: 8px;
+  background: #fafafa;
+}
+
+.mini-chart-block span {
+  color: #000000;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.mini-chart-block canvas {
+  width: 100%;
+  height: 54px;
 }
 
 @media (max-width: 900px) {
@@ -383,13 +453,8 @@ body {
     gap: 12px;
   }
 
-  .chart-heading {
-    display: grid;
-  }
-
-  .chart-detail {
-    min-width: 0;
-    text-align: left;
+  .composite-popover {
+    width: min(280px, calc(100% - 14px));
   }
 }
 
@@ -514,10 +579,15 @@ body {
   .charts-section {
     gap: 8px;
     margin-top: 10px;
-    padding-bottom: 72px;
+    margin-bottom: 40px;
+  }
+
+  .composite-chart-card {
+    grid-column: 1 / -1;
   }
 
   .chart-card {
+    aspect-ratio: 1 / 1;
     padding: 10px;
   }
 
@@ -530,16 +600,39 @@ body {
     font-size: 12px;
   }
 
-  .chart-detail {
-    padding: 7px;
+  .chart-slot {
+    aspect-ratio: 1 / 0.82;
   }
 
-  .chart-detail span,
-  .chart-detail small {
+  .composite-popover {
+    right: 6px;
+    bottom: 6px;
+    width: calc(100% - 12px);
+    padding: 10px;
+  }
+
+  .composite-popover > strong {
+    font-size: 16px;
+  }
+
+  .composite-popover p {
+    font-size: 11px;
+  }
+
+  .popover-mini-grid {
+    gap: 7px;
+  }
+
+  .mini-chart-block {
+    grid-template-rows: auto 44px;
+    padding: 6px;
+  }
+
+  .mini-chart-block span {
     font-size: 9px;
   }
 
-  .chart-detail strong {
-    font-size: 11px;
+  .mini-chart-block canvas {
+    height: 44px;
   }
 }
