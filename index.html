@@ -10,6 +10,16 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script>
+      window.tailwind = {
+        config: {
+          corePlugins: {
+            preflight: false
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -133,7 +143,9 @@
         </article>
 
         <article class="panel chart-card chart-empty" aria-label="Secondo grafico in arrivo"></article>
-        <div class="panel chart-slot chart-slot-left" aria-hidden="true"></div>
+        <div class="panel chart-slot chart-slot-left benchmark-widget-host">
+          <div id="socialBenchmarkRoot"></div>
+        </div>
         <div class="panel chart-slot chart-slot-right" aria-hidden="true"></div>
         <div class="cta-space" aria-hidden="true"></div>
       </section>
@@ -192,7 +204,76 @@
         ...item,
         units: item.cadence * item.medianViews
       }));
+      const socialBenchmarkData = [
+        { label: "IO", views: 125000, accent: true },
+        { label: "Competitor A", views: 720000 },
+        { label: "Competitor B", views: 520000 },
+        { label: "Competitor C", views: 910000 }
+      ];
       let showCompositePopover = () => {};
+
+      function SocialBenchmarkWidget() {
+        const maxViews = 1000000;
+
+        return h(
+          "section",
+          {
+            className:
+              "flex h-full w-full flex-col justify-between rounded-lg bg-[#0f0f0f] px-3 py-2 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+          },
+          h(
+            "header",
+            { className: "mb-1" },
+            h("h2", { className: "m-0 text-[12px] font-bold leading-none text-white" }, "Performance vs Concorrenza"),
+            h(
+              "p",
+              { className: "m-0 mt-0.5 text-[9px] font-medium leading-none text-zinc-400" },
+              "Media visualizzazioni per video"
+            )
+          ),
+          h(
+            "div",
+            { className: "grid gap-1" },
+            socialBenchmarkData.map((item) =>
+              h(
+                "div",
+                { key: item.label, className: "grid grid-cols-[74px_1fr] items-center gap-2" },
+                h(
+                  "span",
+                  {
+                    className: `truncate text-[9px] font-bold leading-none ${
+                      item.accent ? "text-white" : "text-zinc-400"
+                    }`
+                  },
+                  item.label
+                ),
+                h(
+                  "div",
+                  { className: "h-1.5 overflow-hidden rounded-full bg-zinc-800/80" },
+                  h("div", {
+                    className: `h-full rounded-full ${
+                      item.accent ? "bg-red-600 shadow-[0_0_12px_rgba(255,0,0,0.75)]" : "bg-zinc-700"
+                    }`,
+                    style: { width: `${Math.min(item.views / maxViews, 1) * 100}%` }
+                  })
+                )
+              )
+            )
+          ),
+          h(
+            "footer",
+            { className: "mt-1" },
+            h(
+              "div",
+              { className: "grid grid-cols-3 text-[8px] font-semibold leading-none text-zinc-500" },
+              h("span", null, "0"),
+              h("span", { className: "text-center" }, "500k"),
+              h("span", { className: "text-right" }, "1M")
+            ),
+            h("p", { className: "m-0 mt-0.5 text-[8px] font-bold uppercase tracking-[0.12em] text-zinc-500" }, "Views medie")
+          )
+        );
+      }
 
       function MiniCharts({ item }) {
         const cadenceRef = useRef(null);
@@ -314,6 +395,9 @@
 
       const popoverRoot = document.getElementById("compositePopoverRoot");
       if (popoverRoot) createRoot(popoverRoot).render(h(CompositePopover));
+
+      const socialBenchmarkRoot = document.getElementById("socialBenchmarkRoot");
+      if (socialBenchmarkRoot) createRoot(socialBenchmarkRoot).render(h(SocialBenchmarkWidget));
 
       const chartCanvas = document.getElementById("compositeMetricChart");
       if (chartCanvas && window.Chart) {
