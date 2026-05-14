@@ -420,12 +420,7 @@
                 ticks: {
                   color: "#ffffff",
                   font: {
-                    size: isMobileViewport ? 7 : 9
-                  },
-                  padding: 0,
-                  callback(value) {
-                    const label = futureImpactData[value]?.label ?? "";
-                    return label === "tu grazie a Nicolò" && isMobileViewport ? ["tu", "grazie", "Nicolò"] : label;
+                    size: isMobileViewport ? 8 : 10
                   }
                 }
               }
