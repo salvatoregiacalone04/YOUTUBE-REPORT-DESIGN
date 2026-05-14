@@ -343,11 +343,11 @@ body {
 .solutions-cta {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
-  padding: 9px 18px;
+  padding: 11px 22px;
   background: #ff0000;
   color: #ffffff;
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0;
   line-height: 1;
