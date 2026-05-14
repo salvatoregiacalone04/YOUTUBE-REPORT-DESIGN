@@ -607,29 +607,26 @@ body {
   }
 
   .charts-section {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(86px, 0.34fr) minmax(58px, 0.22fr) minmax(72px, 0.44fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(86px, 0.48fr) minmax(72px, 0.52fr);
     gap: 6px;
     margin-top: 0;
     margin-bottom: 0;
   }
 
-  .composite-chart-card,
-  .chart-empty,
-  .cta-space {
-    grid-column: 1;
-  }
-
   .composite-chart-card {
+    grid-column: 1;
     grid-row: 1;
   }
 
   .chart-empty {
-    grid-row: 2;
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .cta-space {
-    grid-row: 3;
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 
   .chart-card {
