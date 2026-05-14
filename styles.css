@@ -82,8 +82,7 @@ body {
 }
 
 .content-grid {
-  display: grid;
-  grid-template-columns: minmax(190px, 0.38fr) minmax(0, 1fr);
+  display: flex;
   gap: 18px;
   align-items: start;
 }
@@ -93,10 +92,20 @@ body {
 }
 
 .goals-panel {
-  min-height: auto;
-  padding: 24px;
+  display: flex;
+  flex: 0 0 min(260px, 34%);
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  min-height: 0;
+  padding: 18px;
   background: rgba(255, 255, 255, 0.025);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+}
+
+.main-panel {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .panel-heading {
@@ -129,9 +138,9 @@ body {
 }
 
 .goal-recap {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .goal-item {
@@ -285,7 +294,7 @@ body {
   }
 
   .content-grid {
-    grid-template-columns: minmax(168px, 0.52fr) minmax(0, 1fr);
+    gap: 12px;
   }
 }
 
@@ -314,8 +323,12 @@ body {
     padding: 10px;
   }
 
+  .goals-panel {
+    flex-basis: 84px;
+  }
+
   .content-grid {
-    grid-template-columns: minmax(84px, 0.28fr) minmax(0, 1fr);
+    align-items: center;
     gap: 6px;
   }
 
@@ -340,7 +353,6 @@ body {
   }
 
   .goal-recap {
-    display: grid;
     gap: 8px;
   }
 
