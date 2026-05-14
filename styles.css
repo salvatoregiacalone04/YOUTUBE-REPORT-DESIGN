@@ -42,7 +42,8 @@ body {
 .reasoning-time {
   position: absolute;
   top: 4px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   margin: 0;
   color: var(--muted);
   font-size: 12px;
@@ -93,7 +94,6 @@ body {
 }
 
 .main-panel {
-  min-height: 430px;
   padding: 22px;
 }
 
@@ -136,8 +136,8 @@ body {
 }
 
 .goal-recap {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 12px 10px;
 }
 
@@ -150,16 +150,20 @@ body {
 .goal-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 34px;
+  width: 100%;
   max-width: 100%;
   padding: 8px 11px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.045);
   color: #eeeeee;
   font-size: 12px;
   font-weight: 750;
   line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .goal-status {
@@ -209,7 +213,7 @@ body {
 }
 
 .report-item summary::after {
-  content: "+";
+  content: "⌄";
   grid-column: 3;
   grid-row: 1;
   justify-self: end;
@@ -222,7 +226,7 @@ body {
 }
 
 .report-item[open] summary::after {
-  content: "-";
+  content: "^";
 }
 
 .report-index {
@@ -266,10 +270,6 @@ body {
 }
 
 .report-item p {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
   margin: 0;
   padding: 0 14px 14px 60px;
   color: var(--muted);
@@ -286,7 +286,8 @@ body {
 
   .reasoning-time {
     position: static;
-    text-align: left;
+    transform: none;
+    text-align: center;
   }
 
   .topbar h1 {
